@@ -62,21 +62,15 @@ st.write("""
 
 try:
     df = pd.read_csv("database_titanic.csv")
-
-    # Calcular sobrevivientes (Survived == 1) agrupados por 'Sex'
     survivors_by_sex = df[df['Survived'] == 1].groupby('Sex').size()
     
-    # Obtener los conteos (usando .get() con un default de 0)
     female_survivors = survivors_by_sex.get('female', 0)
     male_survivors = survivors_by_sex.get('male', 0)
     
-    # Etiquetas y datos para el gráfico
     sex_labels = ["Femenino", "Masculino"]
     survivor_counts = [female_survivors, male_survivors]
     
-
-    fig, ax = plt.subplots(figsize=(7, 5))
-    
+    fig, ax = plt.subplots(figsize=(7, 5))  
     colors = ['lightpink', 'lightblue']
     bars = ax.bar(sex_labels, survivor_counts, color=colors)
     
@@ -85,13 +79,8 @@ try:
     ax.set_title("Total de Sobrevivientes por Sexo")
     
     # Añadir los números (cantidad) encima de las barras
-    for bar in bars:
-        yval = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2.0, yval + 2, str(yval), 
-                ha='center', va='bottom')
-    
+
     plt.tight_layout()
-    
     
     st.pyplot(fig)
 
