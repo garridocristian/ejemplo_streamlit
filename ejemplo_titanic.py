@@ -84,7 +84,3 @@ try:
     
     st.pyplot(fig)
 
-except FileNotFoundError:
-    st.error("Error: No se encontró el archivo 'database_titanic.csv'. Asegúrese de que esté en el mismo directorio.")
-except KeyError as e:
-    st.error(f"Error: La columna '{e.args[0]}' no se encontró en el archivo CSV. Verifique los datos.")
