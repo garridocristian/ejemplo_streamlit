@@ -55,21 +55,18 @@ st.table(df.head())
 
 
 
+st.write("""
+# Análisis de Sobrevivientes del Titanic
+## Gráfico por Sexo
+""")
+
 try:
     df = pd.read_csv("database_titanic.csv")
-except FileNotFoundError:
-    st.error("Error: No se encontró el archivo 'database_titanic.csv'. Asegúrese de que esté en el directorio correcto.")
-    st.stop() # Detiene la ejecución si el archivo no se encuentra
 
-
-# --- Gráfico 2: Sobrevivientes por Sexo (Nuevo Gráfico Solicitado) ---
-
-# Calcular sobrevivientes (Survived == 1) agrupados por 'Sex'
-try:
-    # Filtra por sobrevivientes y agrupa por sexo, contando el tamaño de cada grupo
+    # Calcular sobrevivientes (Survived == 1) agrupados por 'Sex'
     survivors_by_sex = df[df['Survived'] == 1].groupby('Sex').size()
     
-    # Obtener los conteos (usando .get() con un default de 0 si un sexo no tiene sobrevivientes)
+    # Obtener los conteos (usando .get() con un default de 0)
     female_survivors = survivors_by_sex.get('female', 0)
     male_survivors = survivors_by_sex.get('male', 0)
     
@@ -77,25 +74,28 @@ try:
     sex_labels = ["Femenino", "Masculino"]
     survivor_counts = [female_survivors, male_survivors]
     
-    # Crear el gráfico de barras en el segundo subplot (ax[1])
-    colors = ['lightpink', 'lightblue']
-    ax[1].bar(sex_labels, survivor_counts, color=colors)
-    ax[1].set_xlabel("Sexo")
-    ax[1].set_ylabel("Cantidad de Sobrevivientes")
-    ax[1].set_title("Total de Sobrevivientes por Sexo")
+
+    fig, ax = plt.subplots(figsize=(7, 5))
     
-    # Añadir los números (cantidad) encima de las barras para mayor claridad
-    for i, count in enumerate(survivor_counts):
-        ax[1].text(i, count + 2, str(count), ha='center', va='bottom') # +2 para dar espacio
-        
+    colors = ['lightpink', 'lightblue']
+    bars = ax.bar(sex_labels, survivor_counts, color=colors)
+    
+    ax.set_xlabel("Sexo")
+    ax.set_ylabel("Cantidad de Sobrevivientes")
+    ax.set_title("Total de Sobrevivientes por Sexo")
+    
+    # Añadir los números (cantidad) encima de las barras
+    for bar in bars:
+        yval = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2.0, yval + 2, str(yval), 
+                ha='center', va='bottom')
+    
+    plt.tight_layout()
+    
+    
+    st.pyplot(fig)
+
+except FileNotFoundError:
+    st.error("Error: No se encontró el archivo 'database_titanic.csv'. Asegúrese de que esté en el mismo directorio.")
 except KeyError as e:
-    # Manejo de error si las columnas 'Survived' o 'Sex' no existen
-    ax[1].text(0.5, 0.5, f"Error: Columna '{e.args[0]}' no encontrada", 
-             ha='center', va='center', color='red', wrap=True)
-
-# Ajustar el layout para que los títulos y etiquetas no se superpongan
-plt.tight_layout()
-
-# --- Mostrar el gráfico en Streamlit ---
-# Esta línea es crucial y faltaba en el script original para mostrar el plot
-st.pyplot(fig)
+    st.error(f"Error: La columna '{e.args[0]}' no se encontró en el archivo CSV. Verifique los datos.")
