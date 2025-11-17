@@ -61,35 +61,6 @@ except FileNotFoundError:
     st.error("Error: No se encontró el archivo 'database_titanic.csv'. Asegúrese de que esté en el directorio correcto.")
     st.stop() # Detiene la ejecución si el archivo no se encuentra
 
-# Muestra un título y una descripción en la aplicación Streamlit.
-st.write("""
-# Mi primera aplicación interactiva
-## Gráficos usando la base de datos del Titanic
-""")
-
-# Usando la notación "with" para crear una barra lateral en la aplicación Streamlit.
-with st.sidebar:
-    # Título para la sección de opciones en la barra lateral.
-    st.write("# Opciones")
-    
-    # Crea un control deslizante (slider)
-    # Ajustado el rango para que sea más útil (1 a 30) y un valor por defecto de 10
-    div = st.slider('Número de bins para Edad:', 1, 30, 10)
-    
-    # Muestra el valor actual del slider en la barra lateral.
-    st.write("Bins=", div)
-
-# --- Definición de los Gráficos ---
-
-# Desplegamos los gráficos en 1 fila y 2 columnas
-fig, ax = plt.subplots(1, 2, figsize=(12, 5)) # Tamaño ajustado para claridad
-
-# --- Gráfico 1: Histograma de Edades (Original) ---
-# Usamos .dropna() para evitar errores con valores nulos (NaN) en 'Age'
-ax[0].hist(df["Age"].dropna(), bins=div)
-ax[0].set_xlabel("Edad")
-ax[0].set_ylabel("Frecuencia")
-ax[0].set_title("Histograma de edades")
 
 # --- Gráfico 2: Sobrevivientes por Sexo (Nuevo Gráfico Solicitado) ---
 
