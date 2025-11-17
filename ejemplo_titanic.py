@@ -62,13 +62,13 @@ st.write("""
 
 try:
     df = pd.read_csv("database_titanic.csv")
-    survivors_by_sex = df[df['Survived'] == 1].groupby('Sex').size()
+    sobrevivientes_sexo= df[df['Survived'] == 1].groupby('Sexo').size()
     
-    female_survivors = survivors_by_sex.get('female', 0)
-    male_survivors = survivors_by_sex.get('male', 0)
+    mujeres_sobrevivientes = sobrevivientes_sexo.get('female', 0)
+    hombres_sobrevivientes = sobrevivientes_sexo.get('male', 0)
     
     sex_labels = ["Femenino", "Masculino"]
-    survivor_counts = [female_survivors, male_survivors]
+    survivor_counts = [mujeres_sobrevivientes, hombres_sobrevivientes]
     
     fig, ax = plt.subplots(figsize=(7, 5))  
     colors = ['lightpink', 'lightblue']
