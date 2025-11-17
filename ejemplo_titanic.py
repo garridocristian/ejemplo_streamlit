@@ -50,10 +50,10 @@ st.write("""
 ## Muestra de datos cargados
 """)
 # Graficamos una tabla
-st.table(df.head())
-
-
-
+with st.expander("Haz clic para ver una muestra de los datos"):
+    # Consejo: st.dataframe() es mejor que st.table() 
+    # porque te da una tabla con barras de scroll.
+    st.dataframe(df.head())
 
 st.write("""
 # Análisis de Sobrevivientes del Titanic
